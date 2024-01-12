@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    networks:
+      - app-network
+
+  nodejs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nodejs-app
+    environment:
+      - MONGO_URL=mongodb://mongodb/mydb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
